@@ -10,15 +10,22 @@
 /*-------------------------------------------------------------------------*/
 
 #define DATA_BUS PORTC		// port connected to pins 7-14 of LCD display
-#define CONTROL_BUS PORTD	// port connected to pins 4 and 6 of LCD disp.
-#define RS 6			// pin number of uC connected to pin 4 of LCD disp.
-#define E 7			// pin number of uC connected to pin 6 of LCD disp.
+#define CONTROL_BUS PORTA	// port connected to pins 4 and 6 of LCD disp.
+#define RS 4			// pin number of uC connected to pin 4 of LCD disp.
+#define E 5 	// pin number of uC connected to pin 6 of LCD disp.
 
 /*-------------------------------------------------------------------------*/
+
+
+
 
 void LCD_ClearScreen(void) {
    LCD_WriteCommand(0x01);
 }
+
+
+
+
 
 void LCD_init(void) {
 
@@ -57,6 +64,14 @@ void LCD_DisplayString( unsigned char column, const unsigned char* string) {
       LCD_WriteData(*string++);
    }
 }
+void LCD_noDisplayString( unsigned char column, const unsigned char* string) {
+	
+	unsigned char c = column;
+	while(*string) {
+		LCD_Cursor(c++);
+		LCD_WriteData(*string++);
+	}
+}
 
 void LCD_Cursor(unsigned char column) {
    if ( column < 17 ) { // 16x1 LCD: column < 9
@@ -73,7 +88,7 @@ void delay_ms(int miliSec) //for 8 Mhz crystal
 {
     int i,j;
     for(i=0;i<miliSec;i++)
-    for(j=0;j<775;j++)
+    for(j=0;j<220;j++)
   {
    asm("nop");
   }
